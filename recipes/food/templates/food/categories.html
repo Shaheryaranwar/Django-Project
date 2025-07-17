@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container">
+    <div class="section-title">
+        <h2>All Categories</h2>
+        <p>Explore our wide range of food categories</p>
+    </div>
+    
+    <div class="categories">
+        {% for category in categories %}
+        <div class="category-card">
+            <a href="{% url 'category_recipes' category.slug %}">
+                <div class="category-img">
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                </div>
+                <div class="category-info">
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.recipe_count }} Recipes</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

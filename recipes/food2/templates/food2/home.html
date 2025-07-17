@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Your Recipes</h1>
+    {% if recipes %}
+        {% for recipe in recipes %}
+            <div>{{ recipe.title }}</div>
+        {% endfor %}
+    {% else %}
+        <p>Please login to see your recipes.</p>
+    {% endif %}
+{% endblock %}

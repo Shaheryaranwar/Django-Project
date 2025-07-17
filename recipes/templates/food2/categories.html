@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Categories | Foodie's Delight{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+    <h2 class="section-title text-center mb-5">Breakfast</h2>
+    <div class="row">
+        {% for i in range_10 %}
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="https://source.unsplash.com/300x200/?breakfast,food,{{ i }}" class="card-img-top" alt="Breakfast Dish {{ i }}">
+                <div class="card-body">
+                    <h5 class="card-title">Breakfast Dish {{ i }}</h5>
+                    <p class="card-text">Delicious and healthy breakfast option to start your day.</p>
+                    <a href="#" class="btn btn-primary">Order Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="section-title text-center my-5">Lunch</h2>
+    <div class="row">
+        {% for i in range_10 %}
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="https://source.unsplash.com/300x200/?lunch,meal,{{ i }}" class="card-img-top" alt="Lunch Dish {{ i }}">
+                <div class="card-body">
+                    <h5 class="card-title">Lunch Dish {{ i }}</h5>
+                    <p class="card-text">Tasty and fulfilling lunch to keep you energized.</p>
+                    <a href="#" class="btn btn-primary">Order Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="section-title text-center my-5">Dinner</h2>
+    <div class="row">
+        {% for i in range_10 %}
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="https://source.unsplash.com/300x200/?dinner,meal,{{ i }}" class="card-img-top" alt="Dinner Dish {{ i }}">
+                <div class="card-body">
+                    <h5 class="card-title">Dinner Dish {{ i }}</h5>
+                    <p class="card-text">Satisfying dinner to end your day with a smile.</p>
+                    <a href="#" class="btn btn-primary">Order Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2 class="section-title text-center my-5">Dessert</h2>
+    <div class="row">
+        {% for i in range_10 %}
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="https://source.unsplash.com/300x200/?dessert,sweet,{{ i }}" class="card-img-top" alt="Dessert Dish {{ i }}">
+                <div class="card-body">
+                    <h5 class="card-title">Dessert {{ i }}</h5>
+                    <p class="card-text">Sweet treats to satisfy your cravings.</p>
+                    <a href="#" class="btn btn-primary">Order Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
