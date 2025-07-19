@@ -41,12 +41,13 @@ INSTALLED_APPS = [
     "vegitable",
     "food2",
     'accounts',
-    'crispy_forms',
-    'crispy_bootstrap5',
+    'vege'
 ]
 EXTERNAL_APPS = [
     'vegitable',
     'food2'
+    'accounts',
+    'vege',
 ]
 EXTERNAL_APPS += EXTERNAL_APPS
 

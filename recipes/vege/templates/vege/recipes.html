@@ -1,0 +1,83 @@
+{% extends "vege/base.html" %}
+
+
+{% block title %}All Receipes{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">All Receipes</h2>
+<table class="table table-striped table-bordered align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>id</th>
+            <th>Recipe</th>
+            <th>Description</th>
+            <th>Ingredients</th>
+            <th>Instructions</th>
+            <th>Created At</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for receipe in receipes %}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{ receipe.receipe_name }}</td>
+            <td>{{ receipe.receipe_description|truncatewords:20 }}</td>
+            <td>{{ receipe.ingredients|linebreaks }}</td>
+            <td>{{ receipe.instructions|linebreaks }}</td>
+            <td>{{ receipe.created_at|date:"Y-m-d H:i" }}</td>
+            <td>
+                {% if receipe.receipe_image %}
+                    <img src="{{ receipe.receipe_image.url }}" alt="{{ receipe.receipe_name }}">
+                {% else %}
+                    <span class="text-muted">No image</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'delete_receipe' receipe.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<form class="col-6 mx-auto card p-4 shadow-lg" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2 class="mb-4 text-center">Add Recipe</h2>
+    <hr>
+
+    <div class="mb-3">
+        <label for="recipeName" class="form-label">Recipe Name</label>
+        <input type="text" class="form-control" id="recipeName" name="recipe_name" placeholder="Enter recipe name">
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" name="description" placeholder="Enter description"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="ingredients" class="form-label">Ingredients</label>
+        <textarea class="form-control" id="ingredients" name="ingredients" placeholder="List ingredients"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="instructions" class="form-label">Instructions</label>
+        <textarea class="form-control" id="instructions" name="instructions" placeholder="Enter instructions"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="createdAt" class="form-label">Created At</label>
+        <input type="date" class="form-control" id="createdAt" name="created_at">
+    </div>
+
+    <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="file" class="form-control" id="image" name="image">
+    </div>
+
+    <button type="submit" class="btn btn-success w-100">Add Recipe</button>
+</form>
+
+
+{% endblock %}
