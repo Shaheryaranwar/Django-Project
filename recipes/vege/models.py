@@ -31,11 +31,7 @@ class Receipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     receipe_image = models.ImageField(upload_to='receipes/', null=True, blank=True)
     categories = models.ManyToManyField(Category, related_name='recipes', blank=True)
-    meal_type = models.CharField(max_length=20, choices=MEAL_TYPES, default='lunch')
-    prep_time = models.PositiveIntegerField(help_text="Preparation time in minutes", null=True, blank=True)
-    cook_time = models.PositiveIntegerField(help_text="Cooking time in minutes", null=True, blank=True)
-    servings = models.PositiveIntegerField(null=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         ordering = ['-created_at']
