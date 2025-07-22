@@ -1,6 +1,7 @@
 from django.contrib import admin
-
-# Register your models here.
-from .models import *
+from .models import Receipe, Category, Rating, UserProfile
 
 admin.site.register(Receipe)
+admin.site.register(Category)
+admin.site.register(Rating)
+admin.site.register(UserProfile)

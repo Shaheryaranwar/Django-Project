@@ -21,9 +21,7 @@ from django.conf.urls.static import static
 from vege import views as vege_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('recipes1/', vege_views.recipes, name='recipes'),  # This maps the root URL to the recipes view
-    path('recipes1/delete/<int:receipe_id>/', vege_views.delete_receipe, name='delete_receipe'),
-    path('recipes1/edit/<int:receipe_id>/', vege_views.edit_receipe, name='edit_receipe'),
-    path('', include('food2.urls')),  # This includes all food app URLs
+    path('admin/', admin.site.urls),            # Home page              
+    path('recipes1/', include('vege.urls', namespace='vege')), 
+     path('', include('food2.urls', namespace='food')),  # This includes all food app URLs
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

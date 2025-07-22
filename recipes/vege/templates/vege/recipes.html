@@ -1,11 +1,19 @@
 {% extends "vege/base.html" %}
 
-
 {% block title %}All Receipes{% endblock %}
 
 {% block content %}
 <h2 class="mb-4">All Receipes</h2>
+
+<!-- Toggle button for Add Recipe form -->
+<div class="text-end mb-3">
+    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#addRecipeForm">
+        Add New Recipe
+    </button>
+</div>
+
 <table class="table table-striped table-bordered align-middle">
+    <!-- Your existing table code -->
     <thead class="table-dark">
         <tr>
             <th>id</th>
@@ -13,7 +21,7 @@
             <th>Description</th>
             <th>Ingredients</th>
             <th>Instructions</th>
-            <th>Created</th>
+            <th>Created At</th>
             <th>Image</th>
             <th>Actions</th>
         </tr>
@@ -21,12 +29,13 @@
     <tbody>
         {% for receipe in receipes %}
         <tr>
+            <!-- Your existing table row code -->
             <th scope="row">{{forloop.counter}}</th>
             <td>{{ receipe.receipe_name }}</td>
             <td>{{ receipe.receipe_description|truncatewords:20 }}</td>
             <td>{{ receipe.ingredients|linebreaks }}</td>
             <td>{{ receipe.instructions|linebreaks }}</td>
-           <td style="white-space: nowrap;">{{ receipe.created_at|date:"m-d-Y H:i" }}</td>
+            <td style="white-space: nowrap;">{{ receipe.created_at|date:"Y-m-d H:i" }}</td>
             <td>
                 {% if receipe.receipe_image %}
                     <img src="{{ receipe.receipe_image.url }}" alt="{{ receipe.receipe_name }}" style="max-height: 100px;">
@@ -36,8 +45,8 @@
             </td>
             <td>
                 <div class="d-flex gap-2">
-                    <a href="{% url 'edit_receipe' receipe.id %}" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="{% url 'delete_receipe' receipe.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="{% url 'vege:edit_receipe' receipe.id %}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{% url 'vege:delete_receipe' receipe.id %}" class="btn btn-danger btn-sm">Delete</a>
                 </div>
             </td>
         </tr>
@@ -45,42 +54,47 @@
     </tbody>
 </table>
 
-<form class="col-6 mx-auto card p-4 shadow-lg" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <h2 class="mb-4 text-center">Add Recipe</h2>
-    <hr>
+<!-- Collapsible Add Recipe Form -->
+<div class="collapse" id="addRecipeForm">
+    <div class="col-6 mx-auto card p-4 shadow-lg">
+        <h2 class="mb-4 text-center">Add Recipe</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="recipeName" class="form-label">Recipe Name</label>
+                <input type="text" class="form-control" id="recipeName" name="recipe_name" placeholder="Enter recipe name" required>
+            </div>
 
-    <div class="mb-3">
-        <label for="recipeName" class="form-label">Recipe Name</label>
-        <input type="text" class="form-control" id="recipeName" name="recipe_name" placeholder="Enter recipe name">
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" placeholder="Enter description" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="ingredients" class="form-label">Ingredients</label>
+                <textarea class="form-control" id="ingredients" name="ingredients" placeholder="List ingredients" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="instructions" class="form-label">Instructions</label>
+                <textarea class="form-control" id="instructions" name="instructions" placeholder="Enter instructions" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="createdAt" class="form-label">Created At</label>
+                <input type="date" class="form-control" id="createdAt" name="created_at" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">Image</label>
+                <input type="file" class="form-control" id="image" name="image">
+            </div>
+
+            <button type="submit" class="btn btn-success">Add Recipe</button>
+            <button type="button" class="btn btn-secondary ms-2" data-bs-toggle="collapse" data-bs-target="#addRecipeForm">Cancel</button>
+        </form>
     </div>
-
-    <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description" placeholder="Enter description"></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label for="ingredients" class="form-label">Ingredients</label>
-        <textarea class="form-control" id="ingredients" name="ingredients" placeholder="List ingredients"></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label for="instructions" class="form-label">Instructions</label>
-        <textarea class="form-control" id="instructions" name="instructions" placeholder="Enter instructions"></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label for="createdAt" class="form-label">Created At</label>
-        <input type="date" class="form-control" id="createdAt" name="created_at">
-    </div>
-
-    <div class="mb-3">
-        <label for="image" class="form-label">Image</label>
-        <input type="file" class="form-control" id="image" name="image">
-    </div>
-
-    <button type="submit" class="btn btn-success w-100">Add Recipe</button>
-</form>
+</div>
 
 {% endblock %}

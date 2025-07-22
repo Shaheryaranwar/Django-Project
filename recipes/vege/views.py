@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Receipe
+from .models import Receipe, Category
+from .forms import ContactForm
 from django.http import HttpResponse
 
 def recipes(request):
@@ -20,7 +21,7 @@ def recipes(request):
             receipe_image=receipe_image
         )
 
-        return redirect('recipes')
+        return redirect('vege:recipes')
 
     receipes = Receipe.objects.all().order_by('id')
     return render(request, 'vege/recipes.html', {'receipes': receipes})
@@ -32,7 +33,7 @@ def delete_receipe(request, receipe_id):
     except Receipe.DoesNotExist:
         pass
 
-    return redirect('recipes')
+    return redirect('vege:recipes')
 
 def edit_receipe(request, receipe_id):
     receipe = get_object_or_404(Receipe, id=receipe_id)
@@ -49,7 +50,25 @@ def edit_receipe(request, receipe_id):
             receipe.receipe_image = request.FILES['image']
         
         receipe.save()
-        return redirect('recipes')
+        return redirect('vege:recipes')
     
     # For GET request, show the edit form
     return render(request, 'vege/edit_receipe.html', {'receipe': receipe})
+
+def home(request):
+    recipes = Receipe.objects.all().order_by('-created_at')[:12]
+    return render(request, 'vege/home.html', {'recipes': recipes})
+
+def categories(request):
+    categories = Category.objects.all()
+    return render(request, 'vege/categories.html', {'categories': categories})
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('vege:home')
+    else:
+        form = ContactForm()
+    return render(request, 'vege/contact.html', {'form': form})
