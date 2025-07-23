@@ -4,7 +4,7 @@ from .forms import ContactForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
-# from django.contrib.auth import Authenticate, login 
+from django.contrib.auth import authenticate, login 
 
 def recipes(request):
     if request.method == 'POST':
@@ -87,29 +87,38 @@ def contact(request):
 #     else:
 #         form = UserCreationForm()
 #     return render(request, 'vege/register.html', {'form': form})
-def login(request):
+def login_page(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        login_input = request.POST.get('username')  # username or email
         password = request.POST.get('password')
 
-        if User.objects.filter(username=username).exists():
-           messages.error(request, "Username already exists. Please choose a different username.")
-           return redirect("vege:login")
-        
-        user = Authenticate(request, username=username, password=password)
+        user_obj = None
+
+        # Try to find user by email if input is email
+        if User.objects.filter(email=login_input).exists():
+            user_obj = User.objects.get(email=login_input)
+        elif User.objects.filter(username=login_input).exists():
+            user_obj = User.objects.get(username=login_input)
+        else:
+            messages.error(request, "Invalid username or email.")
+            return redirect("vege:login")
+
+        # Now authenticate using username and password
+        user = authenticate(request, username=user_obj.username, password=password)
 
         if user is None:
-            # User is authenticated, log them in
-            messages.error(request, "Invalid username or password.")
+            messages.error(request, "Invalid password.")
             return redirect('vege:login')
-        
+        else:
+            login(request, user)
+            return redirect('vege:recipes1')
+        if request.path.startswith('/recipes1'):
+            return redirect('vege:recipes1')
+        else:
+            return redirect('home')
 
-
-        
-        # Here you would typically authenticate the user
-        # For simplicity, we are not implementing authentication logic
-        
     return render(request, 'vege/login.html')
+
 
 def register(request):
     if request.method == 'POST':
@@ -143,3 +152,6 @@ def register(request):
 
         return redirect('vege:login')  # Redirect to login page after registration
     return render(request, 'vege/register.html')
+
+def food_index(request):
+    return render(request, 'vege/recipes.html')
