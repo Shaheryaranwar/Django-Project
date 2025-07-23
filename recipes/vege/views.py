@@ -89,36 +89,40 @@ def contact(request):
 #     return render(request, 'vege/register.html', {'form': form})
 def login_page(request):
     if request.method == 'POST':
-        login_input = request.POST.get('username')  # username or email
+        username_or_email = request.POST.get('username')
         password = request.POST.get('password')
 
-        user_obj = None
+        # Check if user exists with this username or email
+        user_by_username = User.objects.filter(username=username_or_email).first()
+        user_by_email = User.objects.filter(email=username_or_email).first()
 
-        # Try to find user by email if input is email
-        if User.objects.filter(email=login_input).exists():
-            user_obj = User.objects.get(email=login_input)
-        elif User.objects.filter(username=login_input).exists():
-            user_obj = User.objects.get(username=login_input)
-        else:
-            messages.error(request, "Invalid username or email.")
-            return redirect("vege:login")
+        user = None
+        if user_by_username:
+            user = authenticate(request, username=user_by_username.username, password=password)
+        elif user_by_email:
+            user = authenticate(request, username=user_by_email.username, password=password)
 
-        # Now authenticate using username and password
-        user = authenticate(request, username=user_obj.username, password=password)
-
-        if user is None:
-            messages.error(request, "Invalid password.")
-            return redirect('vege:login')
-        else:
+        if user is not None:
             login(request, user)
-            return redirect('vege:recipes1')
-        if request.path.startswith('/recipes1'):
-            return redirect('vege:recipes1')
+            return redirect('home')  # or redirect dynamically
         else:
-            return redirect('home')
+            # Error messages
+            if not user_by_username and not user_by_email:
+                messages.error(request, "Invalid username or email.")
+            else:
+                messages.error(request, "Invalid password.")
 
+    return render(request, 'vege/login.html')  # your login template
+
+         
+        
+
+
+        
+        # Here you would typically authenticate the user
+        # For simplicity, we are not implementing authentication logic
+        
     return render(request, 'vege/login.html')
-
 
 def register(request):
     if request.method == 'POST':
@@ -128,30 +132,30 @@ def register(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = User.objects.filter(username=username)
-        if user.exists():
-            messages.error(request, "Username already exists. Please choose a different username.")
+        username_exists = User.objects.filter(username=username).exists()
+        email_exists = User.objects.filter(email=email).exists()
 
-            return redirect("vege/register.html")
-        
-        # Create a new user instance
+        if username_exists and email_exists:
+            messages.error(request, "Username and Email already exist. Please choose different ones.")
+            return render(request, "vege/register.html")
+        elif username_exists:
+            messages.error(request, "Username already exists. Please choose a different one.")
+            return render(request, "vege/register.html")
+        elif email_exists:
+            messages.error(request, "Email already exists. Please choose a different one.")
+            return render(request, "vege/register.html")
 
+        # Create new user
         user = User.objects.create_user(
             first_name=first_name,
             last_name=last_name,
             username=username,
-            email=email
-            
+            email=email,
         )
-        user.set_password(password)#password hashing
+        user.set_password(password)
         user.save()
 
-        # Here you would typically create a user object and save it
-        # For simplicity, we are not implementing user creation logic
         messages.success(request, "Registration successful! You can now log in.")
+        return redirect('vege:login')
 
-        return redirect('vege:login')  # Redirect to login page after registration
     return render(request, 'vege/register.html')
-
-def food_index(request):
-    return render(request, 'vege/recipes.html')

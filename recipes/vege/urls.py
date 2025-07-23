@@ -12,7 +12,7 @@ urlpatterns = [
     path('recipes/', views.recipes, name='recipes'),
     path('delete-receipe/<int:receipe_id>/', views.delete_receipe, name='delete_receipe'),
     path('edit-receipe/<int:receipe_id>/', views.edit_receipe, name='edit_receipe'),
-    path('login/', auth_views.LoginView.as_view(template_name='vege/login.html'), name='login'),
+    path('login/', views.login_page, name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('register/', views.register, name='register'),  # Requires a view function
      path('password-reset/', 
