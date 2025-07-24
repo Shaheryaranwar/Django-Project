@@ -1,0 +1,50 @@
+{% extends "vege/base.html" %}
+
+{% block content %}
+<div class="col-6 mx-auto card p-4 shadow-lg">
+    <h2 class="mb-4 text-center">Edit Recipe</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label class="form-label">Recipe Name</label>
+            <input type="text" class="form-control" name="recipe_name" value="{{ receipe.receipe_name }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description" required>{{ receipe.receipe_description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ingredients</label>
+            <textarea class="form-control" name="ingredients" required>{{ receipe.ingredients }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Instructions</label>
+            <textarea class="form-control" name="instructions" required>{{ receipe.instructions }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Created At</label>
+            <input type="date" class="form-control" name="created_at" 
+                   value="{{ receipe.created_at|date:'Y-m-d' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Image</label>
+            <input type="file" class="form-control" name="image">
+            {% if receipe.receipe_image %}
+                <div class="mt-2">
+                    <small>Current: {{ receipe.receipe_image.name }}</small>
+                    <img src="{{ receipe.receipe_image.url }}" class="img-thumbnail mt-2" style="max-height: 100px;">
+                </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Update Recipe</button>
+        <a href="{% url 'vege:recipes' %}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+    </form>
+</div>
+{% endblock %}

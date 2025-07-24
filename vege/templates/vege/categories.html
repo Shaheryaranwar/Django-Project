@@ -1,0 +1,181 @@
+{% extends "vege/base.html" %}
+
+{% block title %}Categories - Recipe App{% endblock %}
+
+{% block extra_head %}
+<style>
+    .category-header {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+    }
+    .category-overlay {
+        background: rgba(0,0,0,0.5);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .category-title {
+        color: white;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .recipe-card {
+        transition: transform 0.3s ease;
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        height: 100%;
+    }
+    .recipe-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    .recipe-img {
+        height: 180px;
+        object-fit: cover;
+    }
+    .badge-time {
+        background: rgba(0,0,0,0.7);
+        color: white;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Our Recipe Collections</h1>
+    
+    <!-- Breakfast Section -->
+    <div class="mb-5">
+        <div class="category-header mb-4" style="background-image: url('https://images.unsplash.com/photo-1550583724-b2692b85b150')">
+            <div class="category-overlay">
+                <h2 class="category-title display-4">Breakfast</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for recipe in breakfast_recipes %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="recipe-card card">
+                    {% if recipe.receipe_image %}
+                    <div class="position-relative">
+                        <img src="{{ recipe.receipe_image.url }}" class="card-img-top recipe-img" alt="{{ recipe.receipe_name }}">
+                        <span class="badge badge-time">{{ recipe.prep_time }} min</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.receipe_name }}</h5>
+                        <p class="card-text text-muted">{{ recipe.receipe_description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge badge-primary">{{ recipe.category.name }}</span>
+                            <a href="{% url 'vege:recipe_detail' recipe.id %}" class="btn btn-sm btn-outline-primary">View Recipe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Lunch Section -->
+    <div class="mb-5">
+        <div class="category-header mb-4" style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c')">
+            <div class="category-overlay">
+                <h2 class="category-title display-4">Lunch</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for recipe in lunch_recipes %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="recipe-card card">
+                    {% if recipe.receipe_image %}
+                    <div class="position-relative">
+                        <img src="{{ recipe.receipe_image.url }}" class="card-img-top recipe-img" alt="{{ recipe.receipe_name }}">
+                        <span class="badge badge-time">{{ recipe.prep_time }} min</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.receipe_name }}</h5>
+                        <p class="card-text text-muted">{{ recipe.receipe_description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge badge-success">{{ recipe.category.name }}</span>
+                            <a href="{% url 'vege:recipe_detail' recipe.id %}" class="btn btn-sm btn-outline-success">View Recipe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Dinner Section -->
+    <div class="mb-5">
+        <div class="category-header mb-4" style="background-image: url('https://images.unsplash.com/photo-1547592180-85f173990554')">
+            <div class="category-overlay">
+                <h2 class="category-title display-4">Dinner</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for recipe in dinner_recipes %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="recipe-card card">
+                    {% if recipe.receipe_image %}
+                    <div class="position-relative">
+                        <img src="{{ recipe.receipe_image.url }}" class="card-img-top recipe-img" alt="{{ recipe.receipe_name }}">
+                        <span class="badge badge-time">{{ recipe.prep_time }} min</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.receipe_name }}</h5>
+                        <p class="card-text text-muted">{{ recipe.receipe_description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge badge-info">{{ recipe.category.name }}</span>
+                            <a href="{% url 'vege:recipe_detail' recipe.id %}" class="btn btn-sm btn-outline-info">View Recipe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Desserts Section -->
+    <div class="mb-5">
+        <div class="category-header mb-4" style="background-image: url('https://images.unsplash.com/photo-1551024506-0bccd828d307')">
+            <div class="category-overlay">
+                <h2 class="category-title display-4">Desserts</h2>
+            </div>
+        </div>
+        <div class="row">
+            {% for recipe in dessert_recipes %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="recipe-card card">
+                    {% if recipe.receipe_image %}
+                    <div class="position-relative">
+                        <img src="{{ recipe.receipe_image.url }}" class="card-img-top recipe-img" alt="{{ recipe.receipe_name }}">
+                        <span class="badge badge-time">{{ recipe.prep_time }} min</span>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.receipe_name }}</h5>
+                        <p class="card-text text-muted">{{ recipe.receipe_description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge badge-danger">{{ recipe.category.name }}</span>
+                            <a href="{% url 'vege:recipe_detail' recipe.id %}" class="btn btn-sm btn-outline-danger">View Recipe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container">
+    <div class="section-title">
+        <h2>All Recipes</h2>
+        <p>Browse our complete collection of delicious recipes</p>
+    </div>
+    
+    <div class="recipes">
+        {% for recipe in recipes %}
+        <div class="recipe-card">
+            <div class="recipe-img">
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
+                <div class="recipe-time">
+                    <i class="far fa-clock"></i> {{ recipe.time }} mins
+                </div>
+            </div>
+            <div class="recipe-info">
+                <h3>{{ recipe.name }}</h3>
+                <div class="recipe-meta">
+                    <span class="recipe-rating">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= recipe.rating %}
+                                <i class="fas fa-star"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        ({{ recipe.review_count }})
+                    </span>
+                    <span><i class="fas fa-fire"></i> {{ recipe.calories }} cal</span>
+                </div>
+                <p class="recipe-desc">{{ recipe.description }}</p>
+                <div class="recipe-author">
+                    <div class="author-img">
+                        <img src="{{ recipe.author.profile.image.url }}" alt="{{ recipe.author.username }}">
+                    </div>
+                    <div class="author-info">
+                        <h4>{{ recipe.author.get_full_name }}</h4>
+                        <p>{{ recipe.author.profile.title }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    <div class="pagination">
+        {% if recipes.has_previous %}
+            <a href="?page=1" class="btn btn-outline">&laquo; First</a>
+            <a href="?page={{ recipes.previous_page_number }}" class="btn btn-outline">Previous</a>
+        {% endif %}
+        
+        <span class="current">
+            Page {{ recipes.number }} of {{ recipes.paginator.num_pages }}
+        </span>
+        
+        {% if recipes.has_next %}
+            <a href="?page={{ recipes.next_page_number }}" class="btn btn-outline">Next</a>
+            <a href="?page={{ recipes.paginator.num_pages }}" class="btn btn-outline">Last &raquo;</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

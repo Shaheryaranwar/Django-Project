@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Menu | Foodie's Delight{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="recipe-header text-center my-5">
+        <h1 class="recipe-title">Our Signature Dishes</h1>
+        <div class="recipe-meta">
+            <span class="time-badge"><i class="fas fa-clock"></i> Freshly Prepared</span>
+            <span class="time-badge"><i class="fas fa-fire"></i> Hot & Delicious</span>
+            <span class="time-badge"><i class="fas fa-utensils"></i> Ready to Serve</span>
+        </div>
+        <img src="https://via.placeholder.com/1200x600?text=Our+Menu" alt="Menu Banner" class="recipe-image">
+    </header>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?pancakes" class="card-img-top" alt="Pancakes">
+                <div class="card-body">
+                    <h5 class="card-title">Classic Pancakes</h5>
+                    <p class="card-text">$5</p>
+                    <p>⭐⭐⭐⭐☆</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?omelette" class="card-img-top" alt="Cheese Omelette">
+                <div class="card-body">
+                    <h5 class="card-title">Cheese Omelette</h5>
+                    <p class="card-text">$4</p>
+                    <p>⭐⭐⭐⭐☆</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?fruit" class="card-img-top" alt="Fruit Bowl">
+                <div class="card-body">
+                    <h5 class="card-title">Fresh Fruit Bowl</h5>
+                    <p class="card-text">$3</p>
+                    <p>⭐⭐⭐⭐☆</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?chicken-sandwich" class="card-img-top" alt="Chicken Sandwich">
+                <div class="card-body">
+                    <h5 class="card-title">Grilled Chicken Sandwich</h5>
+                    <p class="card-text">$8</p>
+                    <p>⭐⭐⭐⭐⭐</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?salad" class="card-img-top" alt="Caesar Salad">
+                <div class="card-body">
+                    <h5 class="card-title">Caesar Salad</h5>
+                    <p class="card-text">$7</p>
+                    <p>⭐⭐⭐⭐☆</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?spaghetti" class="card-img-top" alt="Spaghetti Bolognese">
+                <div class="card-body">
+                    <h5 class="card-title">Spaghetti Bolognese</h5>
+                    <p class="card-text">$10</p>
+                    <p>⭐⭐⭐⭐⭐</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?steak" class="card-img-top" alt="Steak with Veggies">
+                <div class="card-body">
+                    <h5 class="card-title">Steak with Veggies</h5>
+                    <p class="card-text">$15</p>
+                    <p>⭐⭐⭐⭐⭐</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?salmon" class="card-img-top" alt="Grilled Salmon">
+                <div class="card-body">
+                    <h5 class="card-title">Grilled Salmon</h5>
+                    <p class="card-text">$14</p>
+                    <p>⭐⭐⭐⭐⭐</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://source.unsplash.com/400x300/?dessert" class="card-img-top" alt="Dessert">
+                <div class="card-body">
+                    <h5 class="card-title">Chocolate Lava Cake</h5>
+                    <p class="card-text">$4</p>
+                    <p>⭐⭐⭐⭐⭐</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

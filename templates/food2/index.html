@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home | Foodie's Delight{% endblock %}
+
+{% block content %}
+<section class="text-center my-5">
+    <h1 class="display-4 fw-bold">Welcome to Foodie's Delight</h1>
+    <p class="lead">Explore our exquisite collection of dishes from around the world. Start your culinary adventure now!</p>
+</section>
+
+<section class="row g-4">
+    <div class="col-md-3">
+        <div class="card h-100">
+            <img src="https://source.unsplash.com/400x300/?breakfast" class="card-img-top img-fluid" alt="Breakfast">
+            <div class="card-body">
+                <h5 class="card-title">Breakfast</h5>
+                <p class="card-text">Start your day right with our hearty and healthy breakfast options.</p>
+                <a href="/menu/#breakfast" class="btn btn-primary">View Breakfast</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card h-100">
+            <img src="https://source.unsplash.com/400x300/?lunch" class="card-img-top img-fluid" alt="Lunch">
+            <div class="card-body">
+                <h5 class="card-title">Lunch</h5>
+                <p class="card-text">Discover delightful lunch recipes to keep you energized through the day.</p>
+                <a href="/menu/#lunch" class="btn btn-primary">View Lunch</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card h-100">
+            <img src="https://source.unsplash.com/400x300/?dinner" class="card-img-top img-fluid" alt="Dinner">
+            <div class="card-body">
+                <h5 class="card-title">Dinner</h5>
+                <p class="card-text">End your day with a delicious dinner, from light meals to indulgent dishes.</p>
+                <a href="/menu/#dinner" class="btn btn-primary">View Dinner</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card h-100">
+            <img src="https://source.unsplash.com/400x300/?dessert" class="card-img-top img-fluid" alt="Desserts">
+            <div class="card-body">
+                <h5 class="card-title">Desserts</h5>
+                <p class="card-text">Indulge in our sweet collection of desserts perfect for any occasion.</p>
+                <a href="/menu/#desserts" class="btn btn-primary">View Desserts</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="text-center my-5">
+    <h2>Join Our Community</h2>
+    <p>Subscribe to our newsletter for the latest recipes, tips, and exclusive offers.</p>
+    <form class="row g-2 justify-content-center">
+        <div class="col-auto">
+            <input type="email" class="form-control" placeholder="Enter your email">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-warning">Subscribe</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

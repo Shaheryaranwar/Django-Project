@@ -1,0 +1,46 @@
+{% extends "vege/base.html" %}
+
+{% block title %}Home - Recipe App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Featured Recipes</h2>
+    
+    <div class="row">
+        {% for recipe in recipes %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if recipe.receipe_image %}
+                <img src="{{ recipe.receipe_image.url }}" class="card-img-top" alt="{{ recipe.receipe_name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.receipe_name }}</h5>
+                    <p class="card-text">{{ recipe.receipe_description|truncatewords:20 }}</p>
+                    
+                    <!-- Star Ratings (assuming you have a rating system) -->
+                    <div class="mb-2">
+                        <span class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <i class="far fa-star"></i>
+                        </span>
+                        <small class="text-muted">(24 reviews)</small>
+                    </div>
+                    
+                    <!-- User who posted -->
+                    <div class="d-flex align-items-center">
+                        <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="User">
+                        <small>Posted by Chef {{ forloop.counter }}</small>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="#" class="btn btn-sm btn-outline-primary">View Recipe</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container auth-container">
+    <div class="auth-form">
+        <h2>Welcome Back</h2>
+        <p>Log in to your FlavorFusion account</p>
+        
+        {% if form.errors %}
+            <div class="alert alert-error">
+                Your username and password didn't match. Please try again.
+            </div>
+        {% endif %}
+        
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            
+            <div class="form-group">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                <a href="{% url 'password_reset' %}" class="forgot-password">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Log In</button>
+        </form>
+        
+        <div class="social-login">
+            <p>Or log in with:</p>
+            <div class="social-buttons">
+                <a href="#" class="btn btn-social btn-google">
+                    <i class="fab fa-google"></i> Google
+                </a>
+                <a href="#" class="btn btn-social btn-facebook">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+            </div>
+        </div>
+        
+        <div class="auth-footer">
+            <p>Don't have an account? <a href="{% url 'register' %}">Sign up</a></p>
+        </div>
+    </div>
+    
+    <div class="auth-image">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Food Image">
+    </div>
+</section>
+{% endblock %}
