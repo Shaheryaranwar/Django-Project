@@ -30,4 +30,5 @@ urlpatterns = [
     path('reset/done/', 
          auth_views.PasswordResetCompleteView.as_view(template_name='vege/password_reset_complete.html'), 
          name='password_reset_complete'),
+     path('recipe/<int:id>/', views.recipe_detail, name='recipe_detail'),
 ]

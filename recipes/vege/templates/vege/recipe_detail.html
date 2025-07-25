@@ -1,0 +1,25 @@
+{% extends "vege/base.html" %}
+
+{% block title %}
+  {{ recipe.receipe_name }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>{{ recipe.receipe_name }}</h2>
+
+  {% if recipe.receipe_image %}
+  <img
+    src="{{ recipe.receipe_image.url }}"
+    class="img-fluid mb-3"
+    style="max-height: 300px; object-fit: cover"
+    alt="{{ recipe.receipe_name }}"
+  />
+  {% endif %}
+
+  <p><strong>Description:</strong> {{ recipe.receipe_description }}</p>
+  <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+  <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+  <p><strong>Created At:</strong> {{ recipe.created_at }}</p>
+</div>
+{% endblock %}

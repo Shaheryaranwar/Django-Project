@@ -29,6 +29,10 @@ def recipes(request):
     receipes = Receipe.objects.all().order_by('id')
     return render(request, 'vege/recipes.html', {'receipes': receipes})
 
+def recipe_detail(request, id):
+    recipe = get_object_or_404(Receipe, id=id)
+    return render(request, 'vege/recipe_detail.html', {'recipe': recipe})
+
 def delete_receipe(request, receipe_id):
     try:
         receipe = Receipe.objects.get(id=receipe_id)
