@@ -4,7 +4,7 @@ from .forms import ContactForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth import authenticate, login 
+from django.contrib.auth import authenticate, login, logout
 
 def recipes(request):
     if request.method == 'POST':
@@ -104,7 +104,7 @@ def login_page(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')  # or redirect dynamically
+            return redirect('vege:home')  # or redirect dynamically
         else:
             # Error messages
             if not user_by_username and not user_by_email:
@@ -159,3 +159,7 @@ def register(request):
         return redirect('vege:login')
 
     return render(request, 'vege/register.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('vege:login')  # Redirect to home or any other page after logout
