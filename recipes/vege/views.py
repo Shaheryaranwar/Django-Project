@@ -4,8 +4,10 @@ from .forms import ContactForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout 
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='vege:login')
 def recipes(request):
     if request.method == 'POST':
         receipe_name = request.POST.get('recipe_name')
@@ -29,10 +31,12 @@ def recipes(request):
     receipes = Receipe.objects.all().order_by('id')
     return render(request, 'vege/recipes.html', {'receipes': receipes})
 
+@login_required(login_url='vege:login')
 def recipe_detail(request, id):
     recipe = get_object_or_404(Receipe, id=id)
     return render(request, 'vege/recipe_detail.html', {'recipe': recipe})
 
+@login_required(login_url='vege:login')
 def delete_receipe(request, receipe_id):
     try:
         receipe = Receipe.objects.get(id=receipe_id)
@@ -42,6 +46,7 @@ def delete_receipe(request, receipe_id):
 
     return redirect('vege:recipes')
 
+@login_required(login_url='vege:login')
 def edit_receipe(request, receipe_id):
     receipe = get_object_or_404(Receipe, id=receipe_id)
     
@@ -62,14 +67,17 @@ def edit_receipe(request, receipe_id):
     # For GET request, show the edit form
     return render(request, 'vege/edit_receipe.html', {'receipe': receipe})
 
+@login_required(login_url='vege:login')
 def home(request):
     recipes = Receipe.objects.all().order_by('-created_at')[:12]
     return render(request, 'vege/home.html', {'recipes': recipes})
 
+@login_required(login_url='vege:login')
 def categories(request):
     categories = Category.objects.all()
     return render(request, 'vege/categories.html', {'categories': categories})
 
+@login_required(login_url='vege:login')
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
@@ -91,6 +99,8 @@ def contact(request):
 #     else:
 #         form = UserCreationForm()
 #     return render(request, 'vege/register.html', {'form': form})
+
+
 def login_page(request):
     if request.method == 'POST':
         username_or_email = request.POST.get('username')
@@ -127,6 +137,7 @@ def login_page(request):
         # For simplicity, we are not implementing authentication logic
         
     return render(request, 'vege/login.html')
+
 
 def register(request):
     if request.method == 'POST':

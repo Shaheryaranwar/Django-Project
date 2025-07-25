@@ -238,3 +238,15 @@ Structure includes:
 - public/     : Static assets
 - node_modules: Dependencies (excluded)
 - vite.config.js: Vite configuration
+
+
+        <a class="navbar-brand">Navbar</a>"
+        <form class="d-flex" role="search">
+          {% if request.user.is_authenticated %}
+          {% csrf_token %}
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="btn btn-success" type="submit">Logout</a>
+          
+          {% else %}
+          <a href="{%url 'vege:login' %}" class="btn btn-primary">Login</a>
+          {% endif %}
