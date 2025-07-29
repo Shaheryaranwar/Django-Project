@@ -32,6 +32,7 @@ class Receipe(models.Model):
     receipe_image = models.ImageField(upload_to='receipes/', null=True, blank=True)
     categories = models.ManyToManyField(Category, related_name='recipes', blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    recipe_view_count = models.IntegerField(default=1)
 
     class Meta:
         ordering = ['-created_at']
@@ -67,3 +68,33 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+class Department(models.Model):
+    department = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.department
+    
+    class Meta:
+        ordering = ['department']
+
+class StudentID(models.Model):
+    student_id = models.CharField(max_length=20, unique=True)
+ 
+    def __str__(self):
+        return self.student_id
+    
+class Student(models.Model):
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='students')
+    student_id = models.OneToOneField(StudentID, on_delete=models.CASCADE, related_name='student_profile')
+    student_name = models.CharField(max_length=100)
+    student_email = models.EmailField(unique=True)
+    student_phone = models.CharField(max_length=15, unique=True)
+    student_address = models.TextField()
+    student_image = models.ImageField(upload_to='students/', null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.student_name
+
+    class Meta:
+        ordering = ['student_name']
+        verbose_name = 'student'

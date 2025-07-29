@@ -137,8 +137,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Authentication
-LOGIN_REDIRECT_URL = 'vege:home'
-LOGOUT_REDIRECT_URL = 'vege:home'
+# LOGIN_REDIRECT_URL = 'vege:home'
+# LOGOUT_REDIRECT_URL = 'vege:home'
+LOGIN_REDIRECT_URL = '/recipes1/'
+LOGOUT_REDIRECT_URL = '/recipes1/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
