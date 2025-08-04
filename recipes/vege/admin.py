@@ -1,7 +1,8 @@
 from django.contrib import admin
+from .models import *
 from .models import (
     Category, Receipe, Rating,
-    UserProfile, Department, StudentID, Student
+    UserProfile, Department, StudentID, Student,
 )
 
 admin.site.register(Category)
@@ -11,3 +12,5 @@ admin.site.register(UserProfile)
 admin.site.register(Department)
 admin.site.register(StudentID)
 admin.site.register(Student)
+admin.site.register(Subject)
+admin.site.register(SubjectsMarks)    # Assuming Subject model is also defined in models.py

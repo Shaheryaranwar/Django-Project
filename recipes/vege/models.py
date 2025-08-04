@@ -79,10 +79,12 @@ class Department(models.Model):
 
 class StudentID(models.Model):
     student_id = models.CharField(max_length=20, unique=True)
- 
+
     def __str__(self):
         return self.student_id
-    
+class Subject(models.Model):
+    subject_name = models.CharField(max_length=100, unique=True)
+
 class Student(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='students')
     student_id = models.OneToOneField(StudentID, on_delete=models.CASCADE, related_name='student_profile')
@@ -90,6 +92,12 @@ class Student(models.Model):
     student_email = models.EmailField(unique=True)
     student_phone = models.CharField(max_length=15, unique=True)
     student_address = models.TextField()
+    student_age = models.PositiveIntegerField(
+    validators=[MinValueValidator(18), MaxValueValidator(30)],
+    null=True,       # Allows NULL in database
+    blank=True,      # Allows empty in forms/admin
+)
+    
     student_image = models.ImageField(upload_to='students/', null=True, blank=True)
 
     def __str__(self) -> str:
@@ -98,3 +106,14 @@ class Student(models.Model):
     class Meta:
         ordering = ['student_name']
         verbose_name = 'student'
+
+class SubjectsMarks(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='studentsmarks')
+    Subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    marks = models.PositiveIntegerField() 
+
+    def __str__(self)-> str:
+        return f"{self.student.student_name} - {self.Subject.subject_name} - {self.marks}"
+
+    class Meta:
+        unique_together = ['student', 'Subject']   
