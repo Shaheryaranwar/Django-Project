@@ -85,6 +85,9 @@ class StudentID(models.Model):
 class Subject(models.Model):
     subject_name = models.CharField(max_length=100, unique=True)
 
+    def __str__(self) -> str:
+        return self.subject_name
+
 class Student(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='students')
     student_id = models.OneToOneField(StudentID, on_delete=models.CASCADE, related_name='student_profile')

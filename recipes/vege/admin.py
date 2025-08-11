@@ -10,4 +10,7 @@ admin.site.register(Department)
 admin.site.register(StudentID)
 admin.site.register(Student)
 admin.site.register(Subject)
-admin.site.register(SubjectsMarks)    # Assuming Subject model is also defined in models.py
+class SubjectsMarksAdmin(admin.ModelAdmin):
+    list_display = ('student', 'subject', 'marks')
+    
+admin.site.register(SubjectsMarks,SubjectsMarksAdmin)    # Assuming Subject model is also defined in models.py
