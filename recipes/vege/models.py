@@ -109,11 +109,14 @@ class Student(models.Model):
 
 class SubjectsMarks(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='studentsmarks')
-    Subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     marks = models.PositiveIntegerField() 
 
-    def __str__(self)-> str:
-        return f"{self.student.student_name} - {self.Subject.subject_name} - {self.marks}"
+    def __str__(self):
+        return f"{self.student.student_name}  {self.subject.subject_name}"
+    
 
     class Meta:
-        unique_together = ['student', 'Subject']   
+        unique_together = ['student', 'subject']
+        verbose_name = "Subject Mark"
+        
