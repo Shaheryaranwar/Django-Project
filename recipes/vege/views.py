@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Receipe, Category
+from .models import Receipe, Category, Student, Department, StudentID, Subject, SubjectsMarks
+
 from .forms import ContactForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -179,3 +180,7 @@ def register(request):
 def logout_view(request):
     logout(request)
     return redirect('vege:login')  # Redirect to home or any other page after logout
+
+def get_students(request):
+    queryset = Student.objects.all()
+    return render(request, 'vege/students.html', {'queryset': queryset})

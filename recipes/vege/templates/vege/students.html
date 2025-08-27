@@ -1,0 +1,40 @@
+{% extends "vege/base.html" %}
+{% load static %}
+
+{% block title %}Students | RecipeApp{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Student Details</h2>
+<div class="content-container">
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    <th>Department</th>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in queryset %}
+                    {% for mark in student.subjectsmarks_set.all %}
+                        <tr>
+                            <td>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.department.name }}</td>
+                            <td>{{ mark.subject.name }}</td>
+                            <td>{{ mark.marks }}</td>
+                        </tr>
+                    {% endfor %}
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">No students found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
