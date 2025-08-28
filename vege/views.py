@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Receipe, Category, Student, Department, StudentID, Subject, SubjectsMarks
-
+from django.core.paginator import Paginator
 from .forms import ContactForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -182,5 +182,9 @@ def logout_view(request):
     return redirect('vege:login')  # Redirect to home or any other page after logout
 
 def get_students(request):
-    queryset = Student.objects.all()
-    return render(request, 'vege/students.html', {'queryset': queryset})
+    students = Student.objects.all().order_by("student_name")
+    paginator = Paginator(students, 25)  # 5 students per page
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "vege/students.html", {"page_obj": page_obj})
