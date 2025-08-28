@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.db.models import Q
 
 @login_required(login_url='vege:login')
 def recipes(request):
@@ -182,9 +183,23 @@ def logout_view(request):
     return redirect('vege:login')  # Redirect to home or any other page after logout
 
 def get_students(request):
+    query = request.GET.get("q", "")
     students = Student.objects.all().order_by("student_name")
-    paginator = Paginator(students, 25)  # 5 students per page
+
+    if query:
+        students = students.filter(
+            Q(student_name__icontains=query) |
+            Q(student_email__icontains=query) |
+            Q(student_id__student_id__icontains=query) |  # FIXED: use correct field
+            Q(department__department__icontains=query)  |  # department name
+            Q(student_age__exact=query)  
+            )
+
+    paginator = Paginator(students, 25)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "vege/students.html", {"page_obj": page_obj})
+    return render(request, "vege/students.html", {
+        "page_obj": page_obj,
+        "query": query
+    })

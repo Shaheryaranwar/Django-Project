@@ -5,6 +5,14 @@
 
 {% block content %}
 <h2 class="section-title">Student Details</h2>
+
+<!-- 🔎 Search Form -->
+<form method="get" class="mb-3 d-flex">
+  <input type="text" name="q" value="{{ query|default:'' }}" 
+         class="form-control me-2" placeholder="Search students...">
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 <div class="content-container">
   <div class="table-responsive">
     <table class="table table-striped align-middle">
@@ -48,15 +56,15 @@
     </table>
   </div>
 
-  <!-- ✅ Pagination Controls -->
+  <!-- ✅ Pagination -->
   <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
       {% if page_obj.has_previous %}
         <li class="page-item">
-          <a class="page-link" href="?page=1">&laquo; First</a>
+          <a class="page-link" href="?q={{ query }}&page=1">&laquo; First</a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+          <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
         </li>
       {% endif %}
 
@@ -68,10 +76,10 @@
 
       {% if page_obj.has_next %}
         <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+          <a class="page-link" href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
         </li>
       {% endif %}
     </ul>
