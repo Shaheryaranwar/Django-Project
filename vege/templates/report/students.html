@@ -14,9 +14,11 @@ App{% endblock %} {% block content %}
         <tr>
           <th scope="col">#</th>
           <th scope="col">Student Name</th>
-          <th scope="col">Department</th>
+          <th scope="col">Student Email</th>
           <th scope="col">Subject</th>
           <th scope="col">Marks</th>
+          <th scope="col">Age</th>
+          <th scope="col">Picture</th>
         </tr>
       </thead>
       <tbody>
@@ -24,7 +26,7 @@ App{% endblock %} {% block content %}
         student.subjectsmarks_set.all %}
         <tr>
           <td>{{ forloop.parentloop.counter }}.{{ forloop.counter }}</td>
-          <td>{{ student.name }}</td>
+          <td>{{ student.student_id }}</td>
           <td>{{ student.department.name }}</td>
           <td>{{ mark.subject.name }}</td>
           <td>{{ mark.marks }}</td>
