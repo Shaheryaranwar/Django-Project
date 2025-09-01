@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Receipe, Category, Student, Department, StudentID, Subject, SubjectsMarks
 from django.core.paginator import Paginator
-from .forms import ContactForm
+from .forms import ContactForm , StudentForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -203,3 +203,36 @@ def get_students(request):
         "page_obj": page_obj,
         "query": query
     })
+
+def student_add(request):
+    if request.method == "POST":
+        form = StudentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("vege:students")   # <- namespaced URL
+    else:
+        form = StudentForm()
+    return render(request, "vege/student_form.html", {"form": form, "title": "Add Student"})
+
+
+def student_edit(request, id):
+    student = get_object_or_404(Student, id=id)
+    if request.method == "POST":
+        form = StudentForm(request.POST, request.FILES, instance=student)
+        if form.is_valid():
+            form.save()
+            return redirect("vege:students")
+    else:
+        form = StudentForm(instance=student)
+    return render(request, "vege/student_form.html", {"form": form, "title": "Edit Student"})
+
+
+def student_delete(request, id):
+    student = get_object_or_404(Student, id=id)
+    # safer to require POST for delete
+    if request.method == "POST":
+        student.delete()
+        return redirect("vege:students")
+
+    # Optional: show a confirmation page if GET
+    return render(request, "vege/student_confirm_delete.html", {"student": student})
