@@ -40,4 +40,6 @@ urlpatterns = [
      path("students/add/", views.student_add, name="student_add"),
      path("students/edit/<int:id>/", views.student_edit, name="student_edit"),
      path("students/delete/<int:id>/", views.student_delete, name="student_delete"),
+     # path('see_marks/', views.see_marks_list, name="see_marks_list"),
+     path('see_marks/<student_id>/', views.see_marks, name="see_marks"),
 ]

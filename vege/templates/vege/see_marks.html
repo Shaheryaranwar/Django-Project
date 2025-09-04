@@ -1,0 +1,181 @@
+{% extends "vege/base.html" %}
+{% load static %}
+
+{% block title %}Student Marks | RecipeApp{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+
+  <!-- 🔹 Page Title -->
+  <h2 class="section-title text-center mb-4">Student Marks Report</h2>
+
+  <!-- 🔹 Student Info Card with Image -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row">
+        <!-- Student Image Column -->
+        <div class="col-md-3 text-center">
+          {% if student.student_image %}
+            <img src="{{ student.student_image.url }}" 
+                 alt="{{ student.student_name }}" 
+                 width="180" 
+                 height="180"
+                 class="rounded-circle"
+                 style="object-fit: cover;">
+          {% else %}
+            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center mx-auto" 
+                 style="width: 180px; height: 180px">
+              <span class="text-white">No picture</span>
+            </div>
+          {% endif %}
+        </div>
+        
+        <!-- Student Details Column -->
+        <div class="col-md-9">
+          <h5 class="card-title mb-3">🎓 Student Information</h5>
+          {% if student %}
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Student ID:</strong> {{ student.student_id }}</p>
+              <p><strong>Name:</strong> {{ student.student_name }}</p>
+              <p><strong>Email:</strong> {{ student.student_email }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Department:</strong> {{ student.department.department }}</p>
+              <p><strong>Age:</strong> {{ student.student_age }}</p>
+            </div>
+          </div>
+          {% else %}
+          <p class="text-danger">No student information found.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔹 Marks Table -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="card-title mb-3">📑 Subject Marks</h5>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Subject</th>
+              <th>Marks</th>
+              <th>Grade</th>
+              <th>Status</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for mark in subjects_marks %}
+            <tr
+              {% if mark.marks >= 90 %}
+                class="table-success"
+              {% elif mark.marks < 40 %}
+                class="table-danger"
+              {% endif %}
+            >
+              <td>{{ forloop.counter }}</td>
+              <td>{{ mark.subject.subject_name }}</td>
+              <td>{{ mark.marks }}</td>
+              <td>
+                {% if mark.marks >= 90 %}
+                <span class="badge bg-success">A+</span>
+                {% elif mark.marks >= 80 %}
+                <span class="badge bg-primary">A</span>
+                {% elif mark.marks >= 70 %}
+                <span class="badge bg-info">B+</span>
+                {% elif mark.marks >= 60 %}
+                <span class="badge bg-warning text-dark">B</span>
+                {% elif mark.marks >= 50 %}
+                <span class="badge bg-secondary">C</span>
+                {% else %}
+                <span class="badge bg-danger">F</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if mark.marks >= 90 %}
+                <span class="badge bg-success">Excellent</span>
+                {% elif mark.marks >= 80 %}
+                <span class="badge bg-primary">Very Good</span>
+                {% elif mark.marks >= 70 %}
+                <span class="badge bg-info">Good</span>
+                {% elif mark.marks >= 60 %}
+                <span class="badge bg-warning text-dark">Satisfactory</span>
+                {% elif mark.marks >= 50 %}
+                <span class="badge bg-secondary">Average</span>
+                {% else %}
+                <span class="badge bg-danger">Needs Improvement</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if mark.marks >= 40 %}
+                <span class="text-success fw-bold">Pass ✅</span>
+                {% else %}
+                <span class="text-danger fw-bold">Fail ❌</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="text-center text-muted">
+                No marks found for this student.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔹 Stats Section -->
+  {% if stats.total_subjects %}
+  <div class="row g-3">
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">📚 Total Subjects</h6>
+          <p class="display-6">{{ stats.total_subjects }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">📊 Average Marks</h6>
+          <p class="display-6">{{ stats.avg_score|floatformat:2 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">🏆 Highest Marks</h6>
+          <p class="display-6">{{ stats.max_score }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <h6 class="card-title">⬇️ Lowest Marks</h6>
+          <p class="display-6">{{ stats.min_score }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- 🔹 Back Button -->
+  <div class="mt-4 text-center">
+    <a href="{% url 'vege:students' %}" class="btn btn-secondary btn-lg">
+      ⬅ Back to Students
+    </a>
+  </div>
+
+</div>
+{% endblock %}

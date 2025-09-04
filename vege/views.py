@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.db.models import Avg, Max, Min, Count
 from django.db.models import Q
 
 @login_required(login_url='vege:login')
@@ -236,3 +237,23 @@ def student_delete(request, id):
 
     # Optional: show a confirmation page if GET
     return render(request, "vege/student_confirm_delete.html", {"student": student})
+
+def see_marks(request, student_id):
+    subjects_marks = SubjectsMarks.objects.filter(
+    student__student_id__student_id=student_id
+    ).select_related("student", "subject")
+
+    student = subjects_marks.first().student if subjects_marks.exists() else None
+
+    stats = subjects_marks.aggregate(
+        avg_score=Avg("marks"),
+        max_score=Max("marks"),
+        min_score=Min("marks"),
+        total_subjects=Count("id")
+    )
+
+    return render(request, 'vege/see_marks.html', {
+        'subjects_marks': subjects_marks,
+        'student': student,
+        'stats': stats
+    })

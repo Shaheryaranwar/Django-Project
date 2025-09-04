@@ -32,7 +32,6 @@ RecipeApp{% endblock %} {% block content %}
           <th>Department</th>
           <th>Age</th>
           <th>Actions</th>
-          <!-- New column for buttons -->
         </tr>
       </thead>
       <tbody>
@@ -48,9 +47,23 @@ RecipeApp{% endblock %} {% block content %}
               height="60"
               class="rounded-circle"
             />
-            {% else %} No picture {% endif %}
+            {% else %}
+            <div
+              class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
+              style="width: 60px; height: 60px"
+            >
+              No picture
+            </div>
+            {% endif %}
           </td>
-          <td>{{ student.student_id }}</td>
+          <td>
+            <a
+              href="{% url 'vege:see_marks' student.student_id %}"
+              class="text-decoration-none fw-bold"
+            >
+              {{ student.student_id }}
+            </a>
+          </td>
           <td>{{ student.student_name }}</td>
           <td>{{ student.student_email }}</td>
           <td>{{ student.department.department }}</td>

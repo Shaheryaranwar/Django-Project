@@ -1,0 +1,359 @@
+{% extends "vege/base.html" %}
+{% load static %}
+
+{% block title %}Student Marks | RecipeApp{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title"><i class="fas fa-graduation-cap me-2"></i>Student Marks</h2>
+        <a href="{% url 'vege:students' %}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-1"></i> Back to Students
+        </a>
+    </div>
+
+    <!-- Student Info Card -->
+    <div class="card mb-4">
+        <div class="card-header student-header py-3" style="background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white;">
+            <h5 class="card-title mb-0"><i class="fas fa-user-graduate me-2"></i>Student Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong><i class="fas fa-id-card me-2 text-primary"></i>Student ID:</strong> {{ student.student_id }}</p>
+                            <p><strong><i class="fas fa-user me-2 text-primary"></i>Name:</strong> {{student.student_name}}</p>
+                            <p><strong><i class="fas fa-envelope me-2 text-primary"></i>Email:</strong> {{ student.student_email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong><i class="fas fa-building me-2 text-primary"></i>Department:</strong> {{ student.department.department }}</p>
+                            <p><strong><i class="fas fa-birthday-cake me-2 text-primary"></i>Age:</strong> {{ student.student_age }}</p>
+                            <p><strong><i class="fas fa-calendar me-2 text-primary"></i>Academic Year:</strong> 2023-2024</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    {% if student.student_image %}
+                    <img src="{{ student.student_image.url }}" class="rounded-circle mb-2" alt="Student Image" width="120" height="120">
+                    {% else %}
+                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 120px; height: 120px;">
+                        No picture
+                    </div>
+                    {% endif %}
+                    <p class="mb-0 mt-2">Overall Performance: <span class="badge bg-success">Good</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marks Summary -->
+    {% if subjects_marks %}
+    {% with total_marks=0 max_marks=0 %}
+    {% for mark in subjects_marks %}
+        {% widthratio total_marks|add:mark.marks 1 1 as total_marks %}
+        {% widthratio max_marks|add:100 1 1 as max_marks %}
+    {% endfor %}
+    {% with average_marks=total_marks|divisibleby:subjects_marks.count %}
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card summary-card text-center p-3" style="background: linear-gradient(135deg, #74b9ff, #0984e3); color: white;">
+                <h5 class="mb-0">Average Score</h5>
+                <h2 class="my-2">{{ average_marks|floatformat:1 }}%</h2>
+                <div class="progress mb-1">
+                    <div class="progress-bar" style="width: {{ average_marks }}%"></div>
+                </div>
+                <small>Class Average: 72%</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light text-center p-3">
+                <h5 class="mb-0">Total Subjects</h5>
+                <h2 class="my-2 text-primary">{{ subjects_marks.count }}</h2>
+                <p class="mb-0"><i class="fas fa-book me-1"></i> Courses</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light text-center p-3">
+                <h5 class="mb-0">Highest Score</h5>
+                <h2 class="my-2 text-success">92%</h2>
+                <p class="mb-0"><i class="fas fa-chart-line me-1"></i> Mathematics</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light text-center p-3">
+                <h5 class="mb-0">Lowest Score</h5>
+                <h2 class="my-2 text-warning">65%</h2>
+                <p class="mb-0"><i class="fas fa-exclamation-triangle me-1"></i> Physics</p>
+            </div>
+        </div>
+    </div>
+    {% endwith %}
+    {% endwith %}
+    {% endif %}
+
+    <!-- Marks Table -->
+    <div class="card">
+        <div class="card-header py-3">
+            <h5 class="card-title mb-0"><i class="fas fa-table me-2"></i>Subject-wise Marks</h5>
+        </div>
+        <div class="card-body">
+            {% if subjects_marks %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Marks Obtained</th>
+                            <th>Total Marks</th>
+                            <th>Percentage</th>
+                            <th>Grade</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mark in subjects_marks %}
+                        <tr class="{% if mark.marks >= 90 %}grade-A{% elif mark.marks >= 80 %}grade-B{% elif mark.marks >= 70 %}grade-C{% elif mark.marks >= 60 %}grade-D{% else %}grade-F{% endif %}">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="subject-icon">
+                                        <i class="fas fa-book text-primary"></i>
+                                    </div>
+                                    <div>{{ mark.subject.subject_name }}</div>
+                                </div>
+                            </td>
+                            <td>{{ mark.marks }}</td>
+                            <td>100</td>
+                            <td>{{ mark.marks }}%</td>
+                            <td>
+                                {% if mark.marks >= 90 %}
+                                <span class="badge bg-success">A+</span>
+                                {% elif mark.marks >= 80 %}
+                                <span class="badge bg-primary">A</span>
+                                {% elif mark.marks >= 70 %}
+                                <span class="badge bg-info">B+</span>
+                                {% elif mark.marks >= 60 %}
+                                <span class="badge bg-warning text-dark">B</span>
+                                {% else %}
+                                <span class="badge bg-danger">F</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if mark.marks >= 90 %}
+                                <span class="badge bg-success">Excellent</span>
+                                {% elif mark.marks >= 80 %}
+                                <span class="badge bg-primary">Very Good</span>
+                                {% elif mark.marks >= 70 %}
+                                <span class="badge bg-info">Good</span>
+                                {% elif mark.marks >= 60 %}
+                                <span class="badge bg-warning text-dark">Satisfactory</span>
+                                {% else %}
+                                <span class="badge bg-danger">Needs Improvement</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4">
+                <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                <h5>No marks recorded for this student yet.</h5>
+                <p class="text-muted">Please check back later or contact administration.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Performance Summary -->
+    {% if subjects_marks %}
+    <div class="card mt-4">
+        <div class="card-header py-3">
+            <h5 class="card-title mb-0"><i class="fas fa-chart-pie me-2"></i>Performance Summary</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Grade Distribution</h6>
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>A+ (90-100%)</span>
+                            <span>1 subject</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 10px;">
+                            <div class="progress-bar bg-success" style="width: 16.7%"></div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>A (80-89%)</span>
+                            <span>2 subjects</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 10px;">
+                            <div class="progress-bar bg-primary" style="width: 33.3%"></div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>B (70-79%)</span>
+                            <span>2 subjects</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 10px;">
+                            <div class="progress-bar bg-info" style="width: 33.3%"></div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>C (60-69%)</span>
+                            <span>1 subject</span>
+                        </div>
+                        <div class="progress mb-3" style="height: 10px;">
+                            <div class="progress-bar bg-warning" style="width: 16.7%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h6>Recommendations</h6>
+                    <div class="alert alert-info mt-3">
+                        <h6><i class="fas fa-lightbulb me-2"></i>Study Suggestions</h6>
+                        <ul class="mb-0 ps-3">
+                            <li>Focus on improving Physics fundamentals</li>
+                            <li>Practice more problem-solving in Mathematics</li>
+                            <li>Attend programming lab sessions regularly</li>
+                        </ul>
+                    </div>
+                    <div class="alert alert-success">
+                        <h6><i class="fas fa-trophy me-2"></i>Strengths</h6>
+                        <ul class="mb-0 ps-3">
+                            <li>Excellent performance in Mathematics</li>
+                            <li>Good understanding of Programming concepts</li>
+                            <li>Consistent attendance record</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .grade-A { background-color: #d5f5e3; }
+    .grade-B { background-color: #fcf3cf; }
+    .grade-C { background-color: #fdebd0; }
+    .grade-D { background-color: #fadbd8; }
+    .grade-F { background-color: #f5b7b1; }
+    .subject-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #dfe6e9;
+        margin-right: 10px;
+    }
+    .progress {
+        border-radius: 5px;
+    }
+</style>
+{% endblock %}
+
+-----------------------2------------------------
+{% extends "vege/base.html" %} {% load static %} {% block title %}Student Marks
+| RecipeApp{% endblock %} {% block content %}
+<h2 class="section-title">Student Marks</h2>
+
+<!-- 🔹 Student Info -->
+<div class="mb-3">
+  {% if student %}
+  <h5>Student ID: <span class="fw-bold">{{ student.student_id }}</span></h5>
+  <h5>Student Name: <span class="fw-bold">{{ student.student_name }}</span></h5>
+  {% else %}
+  <p class="text-danger">No student information found.</p>
+  {% endif %}
+</div>
+
+<!-- 🔹 Marks Table -->
+<div class="table-responsive">
+  <table class="table table-striped align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Subject</th>
+        <th>Marks</th>
+        <th>Grade</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mark in subjects_marks %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ mark.subject.subject_name }}</td>
+        <td>{{ mark.marks }}</td>
+        <td>
+          {% if mark.marks >= 90 %}
+          <span class="badge bg-success">A+</span>
+          {% elif mark.marks >= 80 %}
+          <span class="badge bg-primary">A</span>
+          {% elif mark.marks >= 70 %}
+          <span class="badge bg-info">B+</span>
+          {% elif mark.marks >= 60 %}
+          <span class="badge bg-warning text-dark">B</span>
+          {% else %}
+          <span class="badge bg-danger">F</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if mark.marks >= 90 %}
+          <span class="badge bg-success">Excellent</span>
+          {% elif mark.marks >= 80 %}
+          <span class="badge bg-primary">Very Good</span>
+          {% elif mark.marks >= 70 %}
+          <span class="badge bg-info">Good</span>
+          {% elif mark.marks >= 60 %}
+          <span class="badge bg-warning text-dark">Satisfactory</span>
+          {% else %}
+          <span class="badge bg-danger">Needs Improvement</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5" class="text-center text-muted">
+          No marks found for this student.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- 🔹 Stats Section -->
+{% if stats.total_subjects %}
+<div class="mt-4">
+  <h5>📊 Performance Summary</h5>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <strong>Total Subjects:</strong> {{ stats.total_subjects }}
+    </li>
+    <li class="list-group-item">
+      <strong>Average Marks:</strong> {{ stats.avg_score|floatformat:2 }}
+    </li>
+    <li class="list-group-item">
+      <strong>Highest Marks:</strong> {{ stats.max_score }}
+    </li>
+    <li class="list-group-item">
+      <strong>Lowest Marks:</strong> {{ stats.min_score }}
+    </li>
+  </ul>
+</div>
+{% endif %}
+
+<!-- 🔹 Back Button -->
+<div class="mt-3">
+  <a href="{% url 'vege:students' %}" class="btn btn-secondary">
+    ⬅ Back to Students
+  </a>
+</div>
+{% endblock %}
