@@ -43,6 +43,15 @@
             <div class="col-md-6">
               <p><strong>Department:</strong> {{ student.department.department }}</p>
               <p><strong>Age:</strong> {{ student.student_age }}</p>
+              <!-- 🔹 Rank Display -->
+              {% if rank %}
+              <p><strong>Rank:</strong> 
+                <span class="badge {% if rank == 1 %}bg-warning{% elif rank <= 3 %}bg-primary{% else %}bg-info{% endif %}">
+                  {{ rank }}{% if rank == 1 %}st{% elif rank == 2 %}nd{% elif rank == 3 %}rd{% else %}th{% endif %} 
+                  out of {{ total_students }}
+                </span>
+              </p>
+              {% endif %}
             </div>
           </div>
           {% else %}
@@ -126,6 +135,21 @@
               </td>
             </tr>
             {% endfor %}
+            
+            <!-- 🔹 Total Marks Row - CORRECTED -->
+            {% if subjects_marks %}
+            <tr class="table-info fw-bold">
+              <td colspan="2" class="text-end">Total Marks:</td>
+              <td>{{ total_marks }}</td>  <!-- Fixed: Use the total_marks from context -->
+              <td colspan="3">
+                {% if stats.avg_score >= 40 %}
+                <span class="text-success">Overall Pass ✅</span>
+                {% else %}
+                <span class="text-danger">Overall Fail ❌</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endif %}
           </tbody>
         </table>
       </div>

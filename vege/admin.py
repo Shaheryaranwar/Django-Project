@@ -17,7 +17,7 @@
 
 from django.contrib import admin
 from .models import *
-
+from django.db.models import Sum
 admin.site.register(Category)
 admin.site.register(Receipe)
 admin.site.register(Rating)
@@ -43,3 +43,11 @@ class StudentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Student, StudentAdmin)
+
+class ReportCardAdmin(admin.ModelAdmin):
+    list_display = ('student', 'student_rank','date_reportcard_issued','total_marks')  # Customize as needed
+
+    def total_marks(self, obj):
+        subject_marks = SubjectsMarks.objects.filter(student=obj.student)
+        return subject_marks.aggregate(marks=Sum('marks'))['marks'] or 0
+admin.site.register(ReportCard , ReportCardAdmin)  # Register ReportCard model

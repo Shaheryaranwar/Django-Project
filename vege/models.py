@@ -122,4 +122,17 @@ class SubjectsMarks(models.Model):
     class Meta:
         unique_together = ['student', 'subject']
         verbose_name = "Subject Mark"
-        
+
+
+class ReportCard(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='reportcards')
+    student_rank = models.PositiveIntegerField()
+    date_reportcard_issued = models.DateField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ['student_rank', 'date_reportcard_issued']
+        ordering = ['-date_reportcard_issued']
+        verbose_name = "Report Card"
+
+    def __str__(self):
+        return f"{self.student} - Rank {self.student_rank}"

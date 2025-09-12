@@ -9,7 +9,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db.models import Avg, Max, Min, Count
-from django.db.models import Q
+from django.db.models import Q, Sum
+# from .seed import genrate_report_card, seed_db
 
 @login_required(login_url='vege:login')
 def recipes(request):
@@ -240,20 +241,45 @@ def student_delete(request, id):
 
 def see_marks(request, student_id):
     subjects_marks = SubjectsMarks.objects.filter(
-    student__student_id__student_id=student_id
+        student__student_id__student_id=student_id
     ).select_related("student", "subject")
 
     student = subjects_marks.first().student if subjects_marks.exists() else None
 
+    # Calculate total marks
+    total_marks = sum(mark.marks for mark in subjects_marks) if subjects_marks else 0
+    
     stats = subjects_marks.aggregate(
         avg_score=Avg("marks"),
         max_score=Max("marks"),
         min_score=Min("marks"),
         total_subjects=Count("id")
     )
+    
+    # Calculate student's rank using database aggregation (more efficient)
+    rank = None
+    total_students = 0
+    
+    if student:
+        # Get all student totals using aggregation - FIXED RELATIONSHIP NAME
+        from django.db.models import Sum
+        student_totals = Student.objects.annotate(
+            total_marks=Sum('studentsmarks__marks')  # Changed to 'studentsmarks'
+        ).exclude(total_marks__isnull=True).order_by('-total_marks')
+        
+        total_students = student_totals.count()
+        
+        # Find current student's rank
+        for i, s in enumerate(student_totals, 1):
+            if s.id == student.id:
+                rank = i
+                break
 
     return render(request, 'vege/see_marks.html', {
         'subjects_marks': subjects_marks,
         'student': student,
-        'stats': stats
+        'stats': stats,
+        'total_marks': total_marks,
+        'rank': rank,
+        'total_students': total_students
     })

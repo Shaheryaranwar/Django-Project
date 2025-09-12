@@ -1,6 +1,8 @@
 from faker import Faker
-import random
+import random 
 from .models import *  # Make sure to import models correctly
+from django.db.models import Sum
+
 
 fake = Faker()
 
@@ -57,3 +59,15 @@ def seed_db(n=50) -> None:
             
     except Exception as e:
         print(f"Error seeding database: {e}")
+
+
+def generate_report_cards():
+    students_with_totals = Student.objects.annotate(
+        total_marks=Sum('studentsmarks__marks')
+    ).order_by('-total_marks')
+
+    for i, student in enumerate(students_with_totals, 1):
+        ReportCard.objects.create(
+            student=student,
+            student_rank=i
+        )
