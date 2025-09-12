@@ -9,7 +9,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db.models import Avg, Max, Min, Count
-from django.db.models import Q, Sum
+from django.db.models import Q, Sum 
+from django.contrib.auth.models import User
 # from .seed import genrate_report_card, seed_db
 
 @login_required(login_url='vege:login')
@@ -190,15 +191,15 @@ def get_students(request):
 
     if query:
         students = students.filter(
-            Q(student_name__icontains=query) |
+            Q(student_name__icontains=query) |   # ✅ use correct field
             Q(student_email__icontains=query) |
-            Q(student_id__student_id__icontains=query) |  # FIXED: use correct field
-            Q(department__department__icontains=query)  |  # department name
-            Q(student_age__exact=query)  
-            )
+            Q(student_id__student_id__icontains=query) |
+            Q(department__department__icontains=query) |
+            Q(student_age__iexact=query)        # ✅ safer for text input
+        )
 
     paginator = Paginator(students, 25)
-    page_number = request.GET.get("page")
+    page_number = request.GET.get("page") 
     page_obj = paginator.get_page(page_number)
 
     return render(request, "vege/students.html", {

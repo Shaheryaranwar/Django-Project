@@ -46,8 +46,10 @@ admin.site.register(Student, StudentAdmin)
 
 class ReportCardAdmin(admin.ModelAdmin):
     list_display = ('student', 'student_rank','date_reportcard_issued','total_marks')  # Customize as needed
+    ordering = ['-student_rank']  # Order by rank descending
 
     def total_marks(self, obj):
         subject_marks = SubjectsMarks.objects.filter(student=obj.student)
         return subject_marks.aggregate(marks=Sum('marks'))['marks'] or 0
+        
 admin.site.register(ReportCard , ReportCardAdmin)  # Register ReportCard model
