@@ -1,5 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.conf import settings
+# User = get_user_model()
 from django.utils.text import slugify
 
 class Category(models.Model):
@@ -17,7 +19,10 @@ class Category(models.Model):
         return self.name
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     image = models.ImageField(upload_to='profiles/', default='profiles/default.jpg')
     bio = models.TextField(blank=True)
     title = models.CharField(max_length=100, blank=True)
@@ -28,7 +33,8 @@ class Profile(models.Model):
 class Recipe(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    # author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey( settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     image = models.ImageField(upload_to='recipes/')
     prep_time = models.PositiveIntegerField(help_text="Preparation time in minutes")

@@ -3,14 +3,16 @@ from .models import Receipe, Category, Student, Department, StudentID, Subject, 
 from django.core.paginator import Paginator
 from .forms import ContactForm , StudentForm
 from django.http import HttpResponse
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db.models import Avg, Max, Min, Count
 from django.db.models import Q, Sum 
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 # from .seed import genrate_report_card, seed_db
 
 @login_required(login_url='vege:login')

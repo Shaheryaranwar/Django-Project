@@ -15,11 +15,12 @@
 #                ]
 #     return render(request, 'food/index.html')
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Recipe, Category, Contact, Profile
 from .forms import UserRegisterForm, ContactForm
+User = get_user_model()
 
 def home(request):
     featured_categories = Category.objects.all()[:4]

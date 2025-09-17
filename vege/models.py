@@ -1,5 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.conf import settings
+
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Category(models.Model):
@@ -31,7 +33,10 @@ class Receipe(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     receipe_image = models.ImageField(upload_to='receipes/', null=True, blank=True)
     categories = models.ManyToManyField(Category, related_name='recipes', blank=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     recipe_view_count = models.IntegerField(default=1)
 
     class Meta:
@@ -45,7 +50,10 @@ class Receipe(models.Model):
 
 class Rating(models.Model):
     receipe = models.ForeignKey(Receipe, on_delete=models.CASCADE, related_name='ratings')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     score = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
@@ -60,7 +68,10 @@ class Rating(models.Model):
         return f"{self.score}/5 by {self.user.username} for {self.receipe.receipe_name}"
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(upload_to='profiles/', null=True, blank=True)
     website = models.URLField(blank=True)
