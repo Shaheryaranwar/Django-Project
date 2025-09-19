@@ -121,6 +121,7 @@ class Student(models.Model):
     class Meta:
         ordering = ['student_name']
         verbose_name = 'student'
+        default_manager_name = "admin_objects"
 
 class SubjectsMarks(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='studentsmarks')

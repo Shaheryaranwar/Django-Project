@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.db.models import Avg, Max, Min, Count
 from django.db.models import Q, Sum 
 from django.contrib.auth.models import User
+from .utils import send_email_to_client
 # from .seed import genrate_report_card, seed_db
 
 @login_required(login_url='vege:login')
@@ -284,3 +285,8 @@ def see_marks(request, student_id):
         'rank': rank,
         'total_students': total_students
     })
+
+
+def send_test_email(request):
+    send_email_to_client("Shaheryaranwar14@gmail.com")
+    return HttpResponse("Email sent successfully!")
