@@ -4,6 +4,10 @@ from django.conf import settings
 
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+class RecipeManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_deleted=False)
+    
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
@@ -38,6 +42,10 @@ class Receipe(models.Model):
         on_delete=models.CASCADE
     )
     recipe_view_count = models.IntegerField(default=1)
+    is_deleted = models.BooleanField(default=False)
+
+    objects = RecipeManager()  # Custom manager to filter out deleted recipes
+    admin_objects = models.Manager()  # Default manager to access all recipes
 
     class Meta:
         ordering = ['-created_at']
@@ -106,6 +114,7 @@ class Student(models.Model):
     student_email = models.EmailField(unique=True)
     student_phone = models.CharField(max_length=15, unique=True)
     student_address = models.TextField()
+    is_deleted = models.BooleanField(default=False)
     student_age = models.PositiveIntegerField(
     validators=[MinValueValidator(18), MaxValueValidator(30)],
     null=True,       # Allows NULL in database
@@ -114,12 +123,16 @@ class Student(models.Model):
     
     student_image = models.ImageField(upload_to='students/', null=True, blank=True)
 
+    objects = RecipeManager()  # Custom manager to filter out deleted recipes
+    admin_objects = models.Manager()
+
     def __str__(self) -> str:
         return self.student_name
 
     class Meta:
         ordering = ['student_name']
         verbose_name = 'student'
+        default_manager_name = "admin_objects"
 
 class SubjectsMarks(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='studentsmarks')

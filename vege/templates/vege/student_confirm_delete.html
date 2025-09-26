@@ -1,0 +1,16 @@
+{% extends "vege/base.html" %}
+
+{% block title %}Confirm Delete | RecipeApp{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3 class="text-danger">⚠ Confirm Deletion</h3>
+  <p>Are you sure you want to delete <strong>{{ student.student_name }}</strong>?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'vege:students' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

@@ -23,7 +23,7 @@ from vege import views as vege_views
 urlpatterns = [
     path('admin/', admin.site.urls),            # Home page              
     path('recipes1/', include('vege.urls', namespace='vege')), 
-     path('', include('food2.urls', namespace='food')),  # This includes all food app URLs
+    path('', include('food2.urls', namespace='food')),  # This includes all food app URLs
      
 ] 
 
