@@ -55,8 +55,8 @@ def delete_receipe(request, receipe_id):
     return redirect('vege:recipes')
 
 @login_required(login_url='vege:login')
-def edit_receipe(request, receipe_id):
-    receipe = get_object_or_404(Receipe, id=receipe_id)
+def edit_receipe(request, slug):
+    receipe = get_object_or_404(Receipe, slugs=slug) 
     
     if request.method == 'POST':
         receipe.receipe_name = request.POST.get('recipe_name')

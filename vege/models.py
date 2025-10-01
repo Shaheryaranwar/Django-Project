@@ -43,7 +43,7 @@ class Receipe(models.Model):
     )
     recipe_view_count = models.IntegerField(default=1)
     is_deleted = models.BooleanField(default=False)
-    slugs = models.SlugField(max_length=150, unique=True, blank=True)
+    slugs = models.SlugField(max_length=255, blank=True, null=True)
 
     objects = RecipeManager()  # Custom manager to filter out deleted recipes
     admin_objects = models.Manager()  # Default manager to access all recipes
