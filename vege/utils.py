@@ -1,4 +1,4 @@
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives,EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
@@ -13,6 +13,26 @@ def send_email_to_client(recipient_email, student_name="Student"):
 
     send_mail(subject, "", from_email, recipient_list, html_message=html_message)
 
+
+def email_with_attachment(subject, message, recipient_list, file_path):
+    try:
+        email = EmailMessage(
+            subject=subject, 
+            body=message, 
+            from_email=settings.DEFAULT_FROM_EMAIL,  # Use DEFAULT_FROM_EMAIL
+            to=recipient_list
+        )
+        
+        # Attach the file
+        email.attach_file(file_path)
+        
+        # Send the email
+        email.send()
+        return True
+    except Exception as e:
+        print(f"Email error: {e}")
+        return False
+    
 def genrate_slug(title: str) -> str:
     from .models import Recipe
     """

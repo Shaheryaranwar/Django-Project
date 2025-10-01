@@ -11,10 +11,39 @@ from django.urls import reverse
 from django.db.models import Avg, Max, Min, Count
 from django.db.models import Q, Sum 
 # from django.contrib.auth.models import User
+from.utils import send_email_to_client, email_with_attachment
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from django.shortcuts import redirect
+from django.conf import settings
+from .utils import email_with_attachment
 User = get_user_model()
 # from .seed import genrate_report_card, seed_db
 
+
+def send_email(request):
+    try:
+        subject = "This is a test email sent from Django Application Server with Attachment."
+        message = "Hi Please Find Attached File With Email."
+        recipient_list = ['shaheryaranwar14@gmail.com']
+        file_path = f"{settings.BASE_DIR}/static/images/recipe3.jpg"
+        
+        # Check if file exists
+        import os
+        if not os.path.exists(file_path):
+            return redirect('/?error=File not found')
+        
+        success = email_with_attachment(subject, message, recipient_list, file_path)
+        
+        if success:
+            return redirect('/?success=Email sent successfully!')
+        else:
+            return redirect('/?error=Failed to send email')
+            
+    except Exception as e:
+        return redirect(f'/?error={str(e)}')
+    
+    
 @login_required(login_url='vege:login')
 def recipes(request):
     if request.method == 'POST':
